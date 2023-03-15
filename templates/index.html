@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!---Let's use bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+    <!--- jquery ajax -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Pagination Preview</title>
+</head>
+<body>
+    <!--- Requesting the data from the server with ajax using same url -->
+    <script>
+        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+        //Global variable to keep track of the page
+        var page = 0;
+        var total_records;
+
+        function get_total_records(){
+            $.ajax({
+                url: $SCRIPT_ROOT + '/_get_total_records',
+                type: 'POST',
+                success: function(data){
+                    total_records = data;
+                }
+            });
+        }
+        
+        function get_data(){
+            $.ajax({
+                url: $SCRIPT_ROOT + '/_get_data_page',
+                type: 'POST',
+                data: {
+                    page: page
+                },
+                success: function(data){
+                    console.log(data);
+                    //data is array of objects
+                    for (var i = 0; i < data.length; i++){
+                        var id = data[i].toString().split(',')[0];
+                        var name = data[i].toString().split(',')[1];
+                        var age = data[i].toString().split(',')[2];
+                        var row = '<tr><td>' + id + '</td><td>' + name + '</td><td>' + age + '</td></tr>';
+                        $('#table').append(row);
+                    }
+                }
+            });
+        }
+
+        function clear_table(){
+            $('#table').empty();
+            //Add the header back
+            var header = '<tr><th>ID</th><th>Name</th><th>Age</th></tr>';
+            $('#table').append(header);
+
+
+        }
+
+        //Function to get the data from the server
+        $(document).ready(function(){
+            total_records = get_total_records();
+            get_data();
+
+            //Change page if next or previous is clicked
+            $('.page-link').click(function(){
+                var text = $(this).text();
+                if (text == 'Next'){
+                    if (page < total_records / 5){
+                        page += 1;
+                    }
+                }
+                else if (text == 'Previous'){
+                    if (page > 0){
+                        page -= 1;
+                    }
+
+                }
+                else{
+                    page = parseInt(text);
+                }
+                //Clear the table
+                clear_table();
+                //Get the data from the server
+                get_data();
+                
+            });
+        });
+
+
+    </script>
+    <!--- Bootstrap table with name, age using pagination -->
+    <style>
+        .table{
+            margin-top: 50px;
+        }
+        .pagination{
+            margin-top: 50px;
+        }
+    </style>
+
+    
+    <class class="container">
+        
+        <table class="table table-bordered" id="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                </tr>
+            </thead>
+            <tbody id="table">
+                
+            </tbody>
+        </table>
+        <ul class="pagination justify-content-center">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </class>
+</body>
+    
+
