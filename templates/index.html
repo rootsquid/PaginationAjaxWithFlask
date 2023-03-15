@@ -29,7 +29,6 @@
                 var url = $SCRIPT_ROOT + '/_get_total_records/' + searchValue;
             }
             else{
-                alert("No search value");
                 var url = $SCRIPT_ROOT + '/_get_total_records';
             }
             
@@ -48,6 +47,7 @@
         }
         
         function get_data(){
+
             $.ajax({
                 url: $SCRIPT_ROOT + '/_get_data_page',
                 type: 'POST',
@@ -81,7 +81,6 @@
         //Function to get the data from the server
         $(document).ready(function(){
             total_records = get_total_records();
-            get_data();
 
             //Change page if next or previous is clicked
             $('.page-link').click(function(){
@@ -89,24 +88,32 @@
                 if (text == 'Next'){
                     if (page < total_records / 5){
                         page += 1;
+                        //Clear the table
+                        clear_table();
                     }
                 }
                 else if (text == 'Previous'){
                     if (page > 0){
                         page -= 1;
+                        //Clear the table
+                        clear_table();
                     }
 
                 }
                 else{
                     page = parseInt(text);
                 }
-                //Clear the table
-                clear_table();
                 //Get the data from the server
                 get_data();
                 
             });
         });
+
+        //Repeat get_data() in a timer to keep the data updated
+        setInterval(function(){
+            clear_table();
+            get_data();
+        }, 1000);
 
 
     </script>
