@@ -21,19 +21,40 @@ def _get_data():
 
 @app.route('/_get_data_page', methods=['POST'])
 def _get_data_page():
-    print("Getting data from database")
+
     if request.method == 'POST':
-        print("Getting data from database")
+        
         page = request.form['page']
+        search = request.form['search']
+
+        if search != "":
+            print("Searching for color")
+            return jsonify(db.search_color(search, page))
+
         print("Page: " + page)
         return jsonify(db.get_data(page))
 
 
+@app.route('/_get_total_records/<string:color>', methods=['POST'])
+def _get_total_records_color(color : str):
+    if request.method == 'POST':
+        print("Getting total records for color")
+        return jsonify(db.get_total_rows(color))
+
 @app.route('/_get_total_records', methods=['POST'])
 def _get_total_records():
     if request.method == 'POST':
-        print("Getting total rows from database")
-        return jsonify(db.get_total_rows())
+        print("Getting total records")
+        return jsonify(db.get_total_rows(""))
+
+
+
+@app.route('/_search_color', methods=['POST'])
+def _search_color(page : int):
+    if request.method == 'POST':
+        print("Searching for color")
+        color = request.form['color']
+        return jsonify(db.search_color(color))
 
 
 

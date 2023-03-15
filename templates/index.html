@@ -19,14 +19,32 @@
         var page = 0;
         var total_records;
 
+
         function get_total_records(){
+            
+            var searchValue = getSearchValue();
+            var url = "";
+
+            if(searchValue != ""){
+                var url = $SCRIPT_ROOT + '/_get_total_records/' + searchValue;
+            }
+            else{
+                alert("No search value");
+                var url = $SCRIPT_ROOT + '/_get_total_records';
+            }
+            
             $.ajax({
-                url: $SCRIPT_ROOT + '/_get_total_records',
+                url: url,
                 type: 'POST',
                 success: function(data){
                     total_records = data;
                 }
             });
+        }
+
+        function getSearchValue(){
+            var search = document.getElementById("search").value;
+            return search;
         }
         
         function get_data(){
@@ -34,7 +52,7 @@
                 url: $SCRIPT_ROOT + '/_get_data_page',
                 type: 'POST',
                 data: {
-                    page: page
+                    page: page, search: getSearchValue()
                 },
                 success: function(data){
                     console.log(data);
@@ -104,6 +122,12 @@
 
     
     <class class="container">
+
+        <!--- Search bar for data -->
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="button-addon2" id="search">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search for color</button>
+        </div>
         
         <table class="table table-bordered" id="table">
             <thead>

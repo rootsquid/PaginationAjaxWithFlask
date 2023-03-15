@@ -50,10 +50,26 @@ class Database:
             data = self.cursor.fetchall()
             return list(data)
 
-    
-    def get_total_rows(self) -> int:
+
+    def get_total_rows(self, color: str) -> int:
         with sqlite3.connect(self.db_name) as self.conn:
+            
+            if color != "":
+                self.cursor = self.conn.cursor()
+                self.cursor.execute('SELECT * FROM random_table WHERE color = ?', (color,))
+                return len(self.cursor.fetchall())
+
             self.cursor = self.conn.cursor()
             self.cursor.execute('SELECT * FROM random_table')
-            return len(self.cursor.fetchall())
+            return len(self.cursor.fetchall())            
+
+
+    #Search for a specific with color
+    def search_color(self, color: str, page: int) -> str:
+        with sqlite3.connect(self.db_name) as self.conn:
+            page = int(page) * 5
+            self.cursor = self.conn.cursor()
+            self.cursor.execute('SELECT * FROM random_table WHERE color = ? LIMIT 5 OFFSET ?', (color, page,))
+            data = self.cursor.fetchall()
+            return list(data)
 
