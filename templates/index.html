@@ -43,7 +43,8 @@
                         var id = data[i].toString().split(',')[0];
                         var name = data[i].toString().split(',')[1];
                         var age = data[i].toString().split(',')[2];
-                        var row = '<tr><td>' + id + '</td><td>' + name + '</td><td>' + age + '</td></tr>';
+                        var color = data[i].toString().split(',')[3];
+                        var row = '<tr><td>' + id + '</td><td>' + name + '</td><td>' + age + '</td><td>' + color + '</td></tr>';
                         $('#table').append(row);
                     }
                 }
@@ -53,7 +54,7 @@
         function clear_table(){
             $('#table').empty();
             //Add the header back
-            var header = '<tr><th>ID</th><th>Name</th><th>Age</th></tr>';
+            var header = '<tr><th>ID</th><th>Name</th><th>Age</th><th>Color</th></tr>';
             $('#table').append(header);
 
 
@@ -110,6 +111,7 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Age</th>
+                    <th>Color</th>
                 </tr>
             </thead>
             <tbody id="table">

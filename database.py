@@ -14,14 +14,14 @@ class Database:
     def create_table(self) -> None:
         with sqlite3.connect(self.db_name) as self.conn:
             self.cursor = self.conn.cursor()
-            self.cursor.execute('CREATE TABLE IF NOT EXISTS random_table (id INTEGER PRIMARY KEY, name TEXT, age INTEGER)')
+            self.cursor.execute('CREATE TABLE IF NOT EXISTS random_table (id INTEGER PRIMARY KEY, name TEXT, age INTEGER, color TEXT)')
             self.conn.commit()
 
 
-    def insert_data(self, name: str, age: int) -> None:
+    def insert_data(self, name: str, color: str, age: int) -> None:
         with sqlite3.connect(self.db_name) as self.conn:
             self.cursor = self.conn.cursor()
-            self.cursor.execute('INSERT INTO random_table (name, age) VALUES (?, ?)', (name, age))
+            self.cursor.execute('INSERT INTO random_table (name, age, color) VALUES (?, ?, ?)', (name, age, color))
             self.conn.commit()
 
 
@@ -37,7 +37,7 @@ class Database:
     def get_all_data(self) -> str:
         with sqlite3.connect(self.db_name) as self.conn:
             self.cursor = self.conn.cursor()
-            self.cursor.execute('SELECT id, name, age FROM random_table')
+            self.cursor.execute('SELECT id, name, age, color FROM random_table')
             data = self.cursor.fetchall()
             return list(data)
 
@@ -46,7 +46,7 @@ class Database:
         with sqlite3.connect(self.db_name) as self.conn:
             page = int(page) * 5
             self.cursor = self.conn.cursor()
-            self.cursor.execute('SELECT id, name, age FROM random_table LIMIT 5 OFFSET ?', (page,))
+            self.cursor.execute('SELECT id, name, age, color FROM random_table LIMIT 5 OFFSET ?', (page,))
             data = self.cursor.fetchall()
             return list(data)
 

@@ -47,7 +47,7 @@ if __name__ == "__main__":
     if db.isEmpty():
         #Fill Database with random dummy data
         for i in range(55):
-            db.insert_data(GetRandomLine('names.txt'), random.randint(18, 110))
+            db.insert_data(name=GetRandomLine('names.txt'), color=GetRandomLine('colors.txt'), age=random.randint(18, 110))
         print("Database filled with dummy data")
 
 
