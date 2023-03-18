@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
     <!--- jquery ajax -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <title>Pagination Preview</title>
+    <title>Dummy List Preview</title>
 </head>
 <body>
 
@@ -22,8 +22,8 @@
     
     <!-- Add Navbar-->
     <nav class="nav justify-content-center">
-      <a class="nav-link active" href="/stats">Dummy List</a>
-      <a class="nav-link" href="#">Statistics</a>
+      <a class="nav-link active" href="{{ url_for('index') }}">Home</a>
+      <a class="nav-link" href="{{ url_for('stats') }}">Stats</a>
     </nav>
     
     <class class="container">
