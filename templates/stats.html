@@ -4,9 +4,51 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!---Let's use bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
     <title>Stats</title>
 </head>
 <body>
     
+    <!-- Add Navbar-->
+    <nav class="nav justify-content-center">
+        <a class="nav-link active" href="{{ url_for('index') }}">Home</a>
+        <a class="nav-link" href="{{ url_for('stats') }}">Stats</a>
+    </nav>
+    
+    <class class="container">
+        
+        <div>
+            <canvas id="dummyChart"></canvas>
+        </div>
+        
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        
+        <script>
+            var labelsColor = {{labelsColor|tojson}};
+            var jsonData = {{data|tojson}};
+            const ctx = document.getElementById('dummyChart');
+            new Chart(ctx, {
+              type: 'bar',
+              data: {
+                labels: labelsColor,
+                datasets: [{
+                    label: 'Dummy Users have this color',
+                    data: jsonData,
+                  borderWidth: 1
+                }]
+              },
+              options: {
+                  scales: {
+                  y: {
+                    beginAtZero: true
+                }
+                }
+            }
+        });
+        </script>
+    </class>
 </body>
-</html>
+    
+

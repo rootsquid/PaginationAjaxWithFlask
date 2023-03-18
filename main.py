@@ -5,6 +5,8 @@ import random
 
 app = Flask(__name__)
 
+colorNames = []
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -56,14 +58,33 @@ def _search_color(page : int):
         color = request.form['color']
         return jsonify(db.search_color(color))
 
-@app.route('/stats')
-def stats():
-    return render_template('stats.html')
 
+@app.route('/stats', methods=['GET'])
+def stats():
+    #Return data for chart
+    if request.method == 'GET':
+        data = db.get_all_colors()
+        #convert data to clean json
+        dataDict = {}
+        for color in data:
+            if color[0] in dataDict:
+                dataDict[color[0]] += 1
+            else:
+                dataDict[color[0]] = 1
+
+                
+
+        return render_template('stats.html', labelsColor=colorNames, data=dataDict)
 
 
 if __name__ == "__main__":
     print("Starting Flask Server")
+
+    #Fill colorNames with colors from colors.txt
+    with open('colors.txt', 'r') as f:
+        for line in f:
+            colorNames.append(line.strip())
+
 
     #Initialize Database
     db = Database()

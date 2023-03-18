@@ -42,6 +42,14 @@ class Database:
             return list(data)
 
 
+    def get_all_colors(self) -> str:
+        with sqlite3.connect(self.db_name) as self.conn:
+            self.cursor = self.conn.cursor()
+            self.cursor.execute('SELECT color FROM random_table')
+            data = self.cursor.fetchall()
+            return list(data)
+
+
     def get_data(self, page: int) -> str:
         with sqlite3.connect(self.db_name) as self.conn:
             page = int(page) * 5
