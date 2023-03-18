@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, url_for
 from database import Database
 from randomdata import GetRandomLine
 import random
@@ -55,6 +55,10 @@ def _search_color(page : int):
         print("Searching for color")
         color = request.form['color']
         return jsonify(db.search_color(color))
+
+@app.route('/stats')
+def stats():
+    return render_template('stats.html')
 
 
 

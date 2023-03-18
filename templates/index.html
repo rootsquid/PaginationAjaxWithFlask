@@ -60,7 +60,7 @@
                     for (var i = 0; i < 5; i++){
                         if (data[i] == null){
                             $('#table').find('tr').eq(i + 1).remove();
-                            break;
+                            continue;
                         }
                         var id = data[i].toString().split(',')[0];
                         var name = data[i].toString().split(',')[1];
@@ -141,6 +141,11 @@
         }
     </style>
 
+    <!-- Add Navbar-->
+    <nav class="nav justify-content-center">
+      <a class="nav-link active" href="/stats">Dummy List</a>
+      <a class="nav-link" href="#">Statistics</a>
+    </nav>
     
     <class class="container">
 
